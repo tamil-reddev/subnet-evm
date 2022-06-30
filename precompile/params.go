@@ -25,10 +25,12 @@ var (
 	ContractDeployerAllowListAddress = common.HexToAddress("0x0200000000000000000000000000000000000000")
 	ContractNativeMinterAddress      = common.HexToAddress("0x0200000000000000000000000000000000000001")
 	TxAllowListAddress               = common.HexToAddress("0x0200000000000000000000000000000000000002")
+	ContractXchainECRecoverAddress   = common.HexToAddress("0x0300000000000000000000000000000000000000")
 
 	UsedAddresses = []common.Address{
 		ContractDeployerAllowListAddress,
 		ContractNativeMinterAddress,
 		TxAllowListAddress,
+		ContractXchainECRecoverAddress,
 	}
 )
