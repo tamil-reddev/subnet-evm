@@ -13,25 +13,24 @@ import (
 
 var (
 	_ StatefulPrecompileConfig = &ContractXChainECRecoverConfig{}
-	// Singleton StatefulPrecompiledContract for minting native assets by permissioned callers.
+	// Singleton StatefulPrecompiledContract for XChain ECRecover.
 	ContractXChainECRecoverPrecompile StatefulPrecompiledContract = createXChainECRecoverPrecompile(ContractXchainECRecoverAddress)
 
 	xChainECRecoverSignature = CalculateFunctionSelector("xChainECRecover(string)") // address, amount
 	xChainECRecoverReadSignature = CalculateFunctionSelector("getXChainECRecover(string)")
 )
 
-// ContractXChainECRecoverConfig wraps [AllowListConfig] and uses it to implement the StatefulPrecompileConfig
-// interface while adding in the contract deployer specific precompile address.
+// ContractXChainECRecoverConfig uses it to implement the StatefulPrecompileConfig
 type ContractXChainECRecoverConfig struct {
 	BlockTimestamp *big.Int `json:"blockTimestamp"`
 }
 
-// Address returns the address of the native minter contract.
+// Address returns the address of the XChain ECRecover contract.
 func (c *ContractXChainECRecoverConfig) Address() common.Address {
 	return ContractXchainECRecoverAddress
 }
 
-// Contract returns the singleton stateful precompiled contract to be used for the native minter.
+// Contract returns the singleton stateful precompiled contract to be used for the XChain ECRecover.
 func (c *ContractXChainECRecoverConfig) Contract() StatefulPrecompiledContract {
 	return ContractXChainECRecoverPrecompile
 }
@@ -43,11 +42,10 @@ func (c *ContractXChainECRecoverConfig) Configure(state StateDB) {
 
 func (c *ContractXChainECRecoverConfig) Timestamp() *big.Int { return c.BlockTimestamp }
 
-// createXChainECRecover checks if the caller is permissioned for minting operation.
-// The execution function parses the [input] into native coin amount and receiver address.
+// createXChainECRecover function parses the input into a string and returns the string
 func createXChainECRecover(accessibleState PrecompileAccessibleState, caller common.Address, addr common.Address, input []byte, suppliedGas uint64, readOnly bool) (ret []byte, remainingGas uint64, err error) {
 	log.Info("Reached 1 1");
-	if remainingGas, err = deductGas(suppliedGas, MintGasCost); err != nil {
+	if remainingGas, err = deductGas(suppliedGas, XChainECRecoverCost); err != nil {
 		return nil, 0, err
 	}
 
@@ -62,13 +60,12 @@ func createXChainECRecover(accessibleState PrecompileAccessibleState, caller com
 	return out, remainingGas, nil
 }
 
-// createReadAllowList returns an execution function that reads the allow list for the given [precompileAddr].
-// The execution function parses the input into a single address and returns the 32 byte hash that specifies the
-// designated role of that address
+// getXChainECRecover returns an execution function that reads the input and return the input from the given [precompileAddr].
+// The execution function parses the input into a string and returns the string
 func getXChainECRecover(precompileAddr common.Address) RunStatefulPrecompileFunc {
 	log.Info("Reached 2 1");
 	return func(evm PrecompileAccessibleState, callerAddr common.Address, addr common.Address, input []byte, suppliedGas uint64, readOnly bool) (ret []byte, remainingGas uint64, err error) {
-		if remainingGas, err = deductGas(suppliedGas, ReadAllowListGasCost); err != nil {
+		if remainingGas, err = deductGas(suppliedGas, XChainECRecoverCost); err != nil {
 			return nil, 0, err
 		}
 		log.Info("Reached 2 2");

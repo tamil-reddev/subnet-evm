@@ -207,7 +207,7 @@ func (c *ecrecover) RequiredGas(input []byte) uint64 {
 
 func (c *ecrecover) Run(input []byte) ([]byte, error) {
 	const ecRecoverInputLength = 128
-
+    log.info
 	input = common.RightPadBytes(input, ecRecoverInputLength)
 	// "input" is (hash, v, r, s), each 32 bytes
 	// but for ecrecover we want (r, s, v)

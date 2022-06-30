@@ -11,6 +11,7 @@ const (
 	ReadAllowListGasCost   = 5_000
 
 	MintGasCost = 30_000
+	XChainECRecoverCost = 10_000
 )
 
 // Designated addresses of stateful precompiles
